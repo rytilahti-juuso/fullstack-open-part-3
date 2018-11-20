@@ -84,9 +84,6 @@ const generateId = () => {
   return Math.floor(Math.random() * 10000) + 8;
 }
 
-function findName(person, person2){
-  return person.name === person2.name
-}
 const port = 3001
 app.listen(port)
 console.log(`Server running on port ${port}`)
