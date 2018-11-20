@@ -54,16 +54,21 @@ app.get('/persons/:id', (request, response) => {
 app.post('/persons', (request, response) => {
   const body = request.body
 
-  if(body.content === undefined){
-    return response.status(400).json({error: 'content missing'})
+  if(body.name === undefined){
+    return response.status(400).json({error: 'name missing'})
   }
-  
+
+  if(body.number === undefined){
+    return response.status(400).json({error: 'number missing'})
+  }
+
+
   const person = {
     name: body.name,
     number: body.number,
     id: generateId()
   }
-  persons = person.concat(person)
+  persons = persons.concat(person)
   response.json(person)
 })
 
@@ -74,7 +79,7 @@ app.delete('/persons/:id', (request, response) => {
 })
 
 const generateId = () => {
-  Math.floor(Math.random() * 10000) + 8;
+  return Math.floor(Math.random() * 10000) + 8;
 }
 
 const port = 3001
