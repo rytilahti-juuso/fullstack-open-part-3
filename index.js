@@ -61,7 +61,9 @@ app.post('/persons', (request, response) => {
   if(body.number === undefined){
     return response.status(400).json({error: 'number missing'})
   }
-
+  if(persons.find( person => person.name === body.name) !== undefined){
+    return response.status(400).json({error: 'Name must be unique'})
+  }
 
   const person = {
     name: body.name,
@@ -82,6 +84,9 @@ const generateId = () => {
   return Math.floor(Math.random() * 10000) + 8;
 }
 
+function findName(person, person2){
+  return person.name === person2.name
+}
 const port = 3001
 app.listen(port)
 console.log(`Server running on port ${port}`)
