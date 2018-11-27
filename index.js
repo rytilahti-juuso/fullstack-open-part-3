@@ -46,7 +46,7 @@ app.get('/info', (req, res) => {
     `)
 })
 
-app.get('/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const person = persons.find(person => person.id === id)
     if(person){
@@ -57,7 +57,7 @@ app.get('/persons/:id', (request, response) => {
 
 })
 
-app.post('/persons', (request, response) => {
+app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if(body.name === undefined){
@@ -80,7 +80,7 @@ app.post('/persons', (request, response) => {
   response.json(person)
 })
 
-app.delete('/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
   response.status(204).end()
