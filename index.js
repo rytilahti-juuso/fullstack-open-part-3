@@ -5,10 +5,13 @@ const app= express()
 const bodyParser = require('body-parser')
 
 
+
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
 app.use(cors())
 app.use(express.static('build'))
+
+const Person = require('./models/person')
 
 let persons = [
   {
@@ -35,11 +38,25 @@ let persons = [
 
 
 
-app.get('/persons', (req, res) => {
-  res.json(persons)
+app.get('/api/persons', (req, res) => {
+  Person
+      .find({})
+      .then(persons => {
+
+        res.json(persons.map(formatPerson))
+      })
 })
 
-app.get('/info', (req, res) => {
+app.get('/api/notes', (request, response) => {
+  Note
+    .find({})
+    .then(notes => {
+      response.json(notes)
+    })
+})
+
+
+app.get('/api/info', (req, res) => {
   res.send(`
     <p>Puhelinluettelossa on ${persons.length} henkilön tiedot</p>
     <p>${Date()}</p>
@@ -71,14 +88,25 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({error: 'Name must be unique'})
   }
 
-  const person = {
+  const person = new Person( {
     name: body.name,
     number: body.number,
     id: generateId()
-  }
-  persons = persons.concat(person)
-  response.json(person)
+  })
+  person
+    .save()
+    .then(SavedPerson =>{
+      response.json(formatPerson(SavedPerson))
+    })
 })
+
+const formatPerson = (person) => {
+  return {
+    name: person.name,
+    number: person.number,
+    id: person._id
+  }
+}
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
