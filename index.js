@@ -50,8 +50,8 @@ app.get('/api/persons', (req, res) => {
 app.get('/api/notes', (request, response) => {
   Note
     .find({})
-    .then(notes => {
-      response.json(notes)
+    .then(persons => {
+      response.json(persons)
     })
 })
 
@@ -111,6 +111,7 @@ const formatPerson = (person) => {
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
+  console.log(persons)
   response.status(204).end()
 })
 
