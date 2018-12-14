@@ -15,23 +15,23 @@ const Person = require('./models/person')
 
 let persons = [
   {
-    name: "Arto Hellas",
-    number: "040-123456",
+    name: 'Arto Hellas',
+    number: '040-123456',
     id: 1
   },
   {
-    name: "Martti Tienari",
-    number: "040-123456",
+    name: 'Martti Tienari',
+    number: '040-123456',
     id: 2
   },
   {
-    name: "Arto Järvinen",
-    number: "040-123456",
+    name: 'Arto Järvinen',
+    number: '040-123456',
     id: 3
   },
   {
-    name: "Lea Kutvonen",
-    number: "040-123456",
+    name: 'Lea Kutvonen',
+    number: '040-123456',
     id: 4
   },
 ]
@@ -40,15 +40,15 @@ let persons = [
 
 app.get('/api/persons', (req, res) => {
   Person
-      .find({})
-      .then(persons => {
+    .find({})
+    .then(persons => {
 
-        res.json(persons.map(formatPerson))
-      })
+      res.json(persons.map(formatPerson))
+    })
 })
 
-app.get('/api/notes', (request, response) => {
-  Note
+app.get('/api/persons', (request, response) => {
+  Person
     .find({})
     .then(persons => {
       response.json(persons)
@@ -66,11 +66,11 @@ app.get('/api/info', (req, res) => {
 app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const person = persons.find(person => person.id === id)
-    if(person){
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
+  if(person){
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
 
 })
 
@@ -78,14 +78,14 @@ app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if(body.name === undefined){
-    return response.status(400).json({error: 'name missing'})
+    return response.status(400).json({ error: 'name missing' })
   }
 
   if(body.number === undefined){
-    return response.status(400).json({error: 'number missing'})
+    return response.status(400).json({ error: 'number missing' })
   }
   if(persons.find( person => person.name === body.name) !== undefined){
-    return response.status(400).json({error: 'Name must be unique'})
+    return response.status(400).json({ error: 'Name must be unique' })
   }
 
   const person = new Person( {
@@ -95,7 +95,7 @@ app.post('/api/persons', (request, response) => {
   })
   person
     .save()
-    .then(SavedPerson =>{
+    .then(SavedPerson => {
       response.json(formatPerson(SavedPerson))
     })
 })
@@ -113,18 +113,18 @@ app.delete('/api/persons/:id', (request, response) => {
 //  persons = persons.filter(person => person.id !== id)
 //  console.log(persons
 
-Person
-  .findByIdAndRemove(request.params.id)
-  .then(result => {
-    response.status(204).end()
-  })
-  .catch(error => {
-    response.status(400).send({ error: 'malformatted id' })
-  })
+  Person
+    .findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => {
+      response.status(400).send({ error: 'malformatted id' })
+    })
 })
 
 const generateId = () => {
-  return Math.floor(Math.random() * 10000) + 8;
+  return Math.floor(Math.random() * 10000) + 8
 }
 
 const PORT = process.env.PORT || 3001
